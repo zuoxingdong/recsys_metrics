@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the following metadata"
+title: recsys_metrics
+authors:
+- family-names: "Zuo"
+  given-names: "Xingdong"
+version: 0.0.1
+url: "https://github.com/zuoxingdong/recsys_metrics"

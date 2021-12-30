@@ -61,7 +61,7 @@ hit_rate(preds, target, k=1, reduction='mean')
 
 >> tensor(0.5000)
 ```
-The one example in the batch does not have a hit (i.e. top-1 item is not a relevant item) and second example in the batch gets a hit (i.e. top-1 item is a relevant item). Thus, we have a hit-rate of 0.5.
+The first example in the batch does not have a hit (i.e. top-1 item is not a relevant item) and second example in the batch gets a hit (i.e. top-1 item is a relevant item). Thus, we have a hit-rate of 0.5.
 
 The API of other metrics are of the same format.
 
