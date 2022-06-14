@@ -10,14 +10,35 @@ from recsys_metrics.hit_rate import hit_rate
 from recsys_metrics.normalized_dcg import normalized_dcg
 
 
-def rank_report(preds: Tensor, target: Tensor, k: Optional[int] = None, reduction: Optional[str] = 'mean', to_item: Optional[bool] = True) -> dict:
+dict_abbrev_names = {
+    'prec': 'prec',
+    'rec': 'rec',
+    'map': 'map',
+    'mrr': 'mrr',
+    'hr': 'hr',
+    'ndcg': 'ndcg'
+}
+
+
+dict_full_names = {
+    'prec': 'precision',
+    'rec': 'recall',
+    'map': 'mean_average_precision',
+    'mrr': 'mean_reciprocal_rank',
+    'hr': 'hit_rate',
+    'ndcg': 'normalized_dcg'
+}
+
+
+def rank_report(preds: Tensor, target: Tensor, k: Optional[int] = None, reduction: Optional[str] = 'mean', to_item: Optional[bool] = True, name_abbreviation: Optional[bool] = False) -> dict:
+    dict2name = dict_abbrev_names if name_abbreviation else dict_full_names
     report = {
-        'precision': precision(preds=preds, target=target, k=k, reduction=reduction),
-        'recall': recall(preds=preds, target=target, k=k, reduction=reduction),
-        'mean_average_precision': mean_average_precision(preds=preds, target=target, k=k, reduction=reduction),
-        'mean_reciprocal_rank': mean_reciprocal_rank(preds=preds, target=target, k=k, reduction=reduction),
-        'hit_rate': hit_rate(preds=preds, target=target, k=k, reduction=reduction),
-        'normalized_dcg': normalized_dcg(preds=preds, target=target, k=k, reduction=reduction),
+        dict2name['prec']: precision(preds=preds, target=target, k=k, reduction=reduction),
+        dict2name['rec']: recall(preds=preds, target=target, k=k, reduction=reduction),
+        dict2name['map']: mean_average_precision(preds=preds, target=target, k=k, reduction=reduction),
+        dict2name['mrr']: mean_reciprocal_rank(preds=preds, target=target, k=k, reduction=reduction),
+        dict2name['hr']: hit_rate(preds=preds, target=target, k=k, reduction=reduction),
+        dict2name['ndcg']: normalized_dcg(preds=preds, target=target, k=k, reduction=reduction),
     }
     if to_item:
         report = {k: v.item() for k, v in report.items()}

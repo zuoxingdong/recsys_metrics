@@ -20,13 +20,12 @@ ______________________________________________________________________
 
 ## Overview
 
+### Why do we need `recsys_metrics`?
 ### Highlights
 - Efficient (vectorized) implementations over mini-batches
 - Standard RecSys metrics: precision, recall, map, mrr, hr, ndcg
 - Beyond-accuracy metrics: e.g. coverage, diversity, novelty, etc.
 - All metrics support a top-k argument.
-
-### Why do we need `recsys_metrics`?
 
 ## Installation
 
@@ -91,4 +90,3 @@ Please use this bibtex if you want to cite this repository in your publications:
           journal = {GitHub repository},
           howpublished = {\url{https://github.com/zuoxingdong/recsys_metrics}},
         }
-
