@@ -24,7 +24,7 @@ ______________________________________________________________________
 ### Highlights
 - Efficient (vectorized) implementations over mini-batches
 - Standard RecSys metrics: precision, recall, map, mrr, hr, ndcg
-- Beyond-accuracy metrics: e.g. coverage, diversity, novelty, etc.
+- Beyond-accuracy metrics: coverage, diversity, novelty, serendipity, etc.
 - All metrics support a top-k argument.
 
 ## Installation
