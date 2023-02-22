@@ -16,4 +16,4 @@ from recsys_metrics.serendipity import serendipity, category_unexpectedness
 from recsys_metrics.beyond_accuracy_report import beyond_accuracy_report
 
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
