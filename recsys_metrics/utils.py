@@ -115,6 +115,35 @@ def _check_preds_popularities_inputs(
     return preds, popularities, k
 
 
+def _check_preds_unexpectedness_inputs(
+    preds: Tensor,
+    unexpectedness: Tensor,
+    k: Optional[int] = None
+) -> Tuple[Tensor, Tensor, int]:
+    if preds.device != unexpectedness.device:
+        raise ValueError('`preds` and `unexpectedness` are must on the same device')
+    
+    if preds.shape != unexpectedness.shape:
+        raise ValueError('`preds` and `unexpectedness` must have the same shape')
+
+    if not preds.numel() or not preds.size():  # `preds` and `unexpectedness` already have same shape when executing this line
+        raise ValueError('`preds` and `unexpectedness` must be non-empty and non-scalar tensors')
+
+    if not preds.is_floating_point():
+        raise ValueError('`preds` must be a tensor of floats')
+
+    if unexpectedness.dtype is not torch.long or unexpectedness.min() < 0 or unexpectedness.max() > 1:
+        raise ValueError('`unexpectedness` must be a tensor of longs with values of either 0s or 1s')
+
+    preds = preds.float()
+    unexpectedness = unexpectedness.long()
+    if preds.ndim != 2:
+        raise ValueError('`preds` and `unexpectedness` must be two dimensional tensors')
+    k = _check_topk_validity(preds, k=k)
+
+    return preds, unexpectedness, k
+
+
 def _reduce_tensor(tensor: Tensor, reduction: str) -> Tensor:
     if reduction == 'mean':
         return tensor.mean(0)

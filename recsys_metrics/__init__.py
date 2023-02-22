@@ -12,6 +12,7 @@ from recsys_metrics.catalog_coverage import catalog_coverage
 from recsys_metrics.distributional_coverage import distributional_coverage
 from recsys_metrics.mean_interlist_diversity import mean_interlist_diversity
 from recsys_metrics.expected_popularity_complement import expected_popularity_complement
+from recsys_metrics.serendipity import serendipity, category_unexpectedness
 from recsys_metrics.beyond_accuracy_report import beyond_accuracy_report
 
 

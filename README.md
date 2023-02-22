@@ -22,9 +22,9 @@ ______________________________________________________________________
 
 ### Why do we need `recsys_metrics`?
 ### Highlights
-- Efficient (vectorized) implementations over mini-batches
+- Efficient (vectorized) implementations over mini-batches.
 - Standard RecSys metrics: precision, recall, map, mrr, hr, ndcg, $\alpha$-ndcg
-- Beyond-accuracy metrics: e.g. coverage, diversity, novelty, etc.
+- Beyond-accuracy metrics: coverage, diversity, novelty, serendipity, etc.
 - All metrics support a top-k argument.
 
 ## Installation
@@ -45,6 +45,7 @@ Note that we support Python 3.7+ only.
 
 ## How to use
 
+### Hit Rate
 Let us take Hit Rate (HR) to illustrate how to use this library:
 
 ```python
@@ -63,6 +64,94 @@ hit_rate(preds, target, k=1, reduction='mean')
 The first example in the batch does not have a hit (i.e. top-1 item is not a relevant item) and second example in the batch gets a hit (i.e. top-1 item is a relevant item). Thus, we have a hit-rate of 0.5.
 
 The API of other metrics are of the same format.
+
+### Serendipity
+Let us calculate serendipity:
+
+```python
+preds = torch.tensor([
+    [.5, .3, .1],
+    [.3, .4, .5]
+])
+indexes = torch.tensor([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+target = torch.tensor([
+    [0, 1, 1],
+    [0, 1, 1]
+])
+```
+
+Suppose we are given the following tensors for the category of items and historical interactions for each example in the mini-batch:
+
+```python
+item_category = torch.tensor([
+    [2, 1, 8],
+    [3, 9, 4]
+])
+hist_seq_category = torch.tensor([
+    [5, 0, 1, 2, 3, 0, 4],
+    [1, 3, 6, 0, 2, 3, 5]
+])
+```
+
+Then, we could use a helper function provided in this library to calculate a tensor of unexpectedness (or surprise) with a window size of the most recent interactions:
+
+```python
+unexpectedness = category_unexpectedness(
+  item_category, 
+  hist_seq_category=hist_seq_category[:, None, :].tile(1, 3, 1), 
+  window_size=3
+)
+```
+
+Finally, let us calculate the serendipity:
+
+```python
+serendipity(preds, target, unexpectedness, k=3, reduction='mean')
+
+>> tensor(0.6667)
+```
+
+### Report functions
+
+This library also offers report functions to conveniently calculate standard IR metrics or beyond-accuracy metrics in an one-liner style.
+
+```python
+rank_report(
+    preds=preds, 
+    target=target, 
+    k=None, 
+    to_item=True, 
+    name_abbreviation=True
+)
+
+>> {'prec': 0.6666666865348816,
+ 'rec': 1.0,
+ 'map': 0.7916666865348816,
+ 'mrr': 0.75,
+ 'hr': 1.0,
+ 'ndcg': 0.8467131853103638}
+```
+
+```python
+beyond_accuracy_report(
+    preds=preds,
+    indexes=indexes,
+    k=None,
+    to_item=True,
+    name_abbreviation=True,
+    target=target,
+    unexpectedness=unexpectedness.long()
+)
+
+>> {'cat_cov': 1.0,
+ 'dist_cov': 1.0000001192092896,
+ 'mil': 1.0,
+ 'serend': 0.6666666865348816}
+```
+
 
 
 ## Benchmark
