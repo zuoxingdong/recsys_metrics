@@ -124,15 +124,16 @@ rank_report(
     target=target, 
     k=None, 
     to_item=True, 
-    name_abbreviation=True
+    name_abbreviation=True,
+    rounding=4,
 )
 
->> {'prec': 0.6666666865348816,
+>> {'prec': 0.5,
  'rec': 1.0,
- 'map': 0.7916666865348816,
- 'mrr': 0.75,
+ 'map': 0.6667,
+ 'mrr': 0.6667,
  'hr': 1.0,
- 'ndcg': 0.8467131853103638}
+ 'ndcg': 0.75}
 ```
 
 ```python
@@ -143,13 +144,14 @@ beyond_accuracy_report(
     to_item=True,
     name_abbreviation=True,
     target=target,
-    unexpectedness=unexpectedness.long()
+    unexpectedness=unexpectedness.long(),
+    rounding=4,
 )
 
 >> {'cat_cov': 1.0,
- 'dist_cov': 1.0000001192092896,
+ 'dist_cov': 1.0,
  'mil': 1.0,
- 'serend': 0.6666666865348816}
+ 'serend': 0.6667}
 ```
 
 
