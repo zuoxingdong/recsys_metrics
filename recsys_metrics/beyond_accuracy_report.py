@@ -24,7 +24,7 @@ dict_full_names = {
 }
 
 
-def beyond_accuracy_report(preds: Tensor, indexes: Tensor, popularities: Optional[Tensor] = None, k: Optional[int] = None, to_item: Optional[bool] = True, name_abbreviation: Optional[bool] = False) -> dict:
+def beyond_accuracy_report(preds: Tensor, indexes: Tensor, popularities: Optional[Tensor] = None, k: Optional[int] = None, to_item: Optional[bool] = True, name_abbreviation: Optional[bool] = False, rounding: Optional[int] = 4) -> dict:
     dict2name = dict_abbrev_names if name_abbreviation else dict_full_names
     report = {
         dict2name['cat_cov']: catalog_coverage(preds=preds, indexes=indexes, k=k),
@@ -34,5 +34,5 @@ def beyond_accuracy_report(preds: Tensor, indexes: Tensor, popularities: Optiona
     if popularities is not None:
         report[dict2name['epc']] = expected_popularity_complement(preds=preds, popularities=popularities, k=k)
     if to_item:
-        report = {k: v.item() for k, v in report.items()}
+        report = {k: round(v.item(), rounding) for k, v in report.items()}
     return report

@@ -6,6 +6,8 @@ from recsys_metrics.hit_rate import hit_rate
 from recsys_metrics.normalized_dcg import normalized_dcg
 from recsys_metrics.rank_report import rank_report
 
+from recsys_metrics.alpha_normalized_dcg import alpha_normalized_dcg
+
 from recsys_metrics.catalog_coverage import catalog_coverage
 from recsys_metrics.distributional_coverage import distributional_coverage
 from recsys_metrics.mean_interlist_diversity import mean_interlist_diversity
@@ -13,4 +15,4 @@ from recsys_metrics.expected_popularity_complement import expected_popularity_co
 from recsys_metrics.beyond_accuracy_report import beyond_accuracy_report
 
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'

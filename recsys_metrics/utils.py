@@ -20,13 +20,14 @@ def _check_ranking_inputs(
     preds: Tensor, 
     target: Tensor, 
     k: Optional[int] = None, 
-    batched: Optional[bool] = True
+    batched: Optional[bool] = True,
+    skip_target_shape_check: Optional[bool] = False,
 ) -> Tuple[Tensor, Tensor, int]:
     """Adapted from https://github.com/PyTorchLightning/metrics/blob/93cb842f24d15804dd2e7677ca7fc6631b234773/torchmetrics/utilities/checks.py"""
     if preds.device != target.device:
         raise ValueError('`preds` and `target` are must on the same device')
 
-    if preds.shape != target.shape:
+    if (preds.shape != target.shape) and (not skip_target_shape_check):
         raise ValueError('`preds` and `target` must have the same shape')
 
     if not preds.numel() or not preds.size():  # `preds` and `target` already have same shape when executing this line

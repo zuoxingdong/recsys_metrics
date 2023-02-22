@@ -30,7 +30,7 @@ dict_full_names = {
 }
 
 
-def rank_report(preds: Tensor, target: Tensor, k: Optional[int] = None, reduction: Optional[str] = 'mean', to_item: Optional[bool] = True, name_abbreviation: Optional[bool] = False) -> dict:
+def rank_report(preds: Tensor, target: Tensor, k: Optional[int] = None, reduction: Optional[str] = 'mean', to_item: Optional[bool] = True, name_abbreviation: Optional[bool] = False, rounding: Optional[int] = 4) -> dict:
     dict2name = dict_abbrev_names if name_abbreviation else dict_full_names
     report = {
         dict2name['prec']: precision(preds=preds, target=target, k=k, reduction=reduction),
@@ -41,5 +41,5 @@ def rank_report(preds: Tensor, target: Tensor, k: Optional[int] = None, reductio
         dict2name['ndcg']: normalized_dcg(preds=preds, target=target, k=k, reduction=reduction),
     }
     if to_item:
-        report = {k: v.item() for k, v in report.items()}
+        report = {k: round(v.item(), rounding) for k, v in report.items()}
     return report
